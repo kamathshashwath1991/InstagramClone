@@ -1,14 +1,20 @@
-package com.example.android.instagramclone;
+package com.example.android.instagramclone.Home;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.example.android.instagramclone.R;
 import com.example.android.instagramclone.Utils.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
+    private Context mContext= HomeActivity.this;
+    private static final int ACTIVITY_NUM= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,5 +27,9 @@ public class HomeActivity extends AppCompatActivity {
     private void setupBottomNavigationView(){
         BottomNavigationViewEx bottomNavigationViewEx= (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,bottomNavigationViewEx);
+        Menu menu= bottomNavigationViewEx.getMenu();
+        MenuItem menuItem= menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
     }
 }
