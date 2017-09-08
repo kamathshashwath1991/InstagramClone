@@ -10,12 +10,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.example.android.instagramclone.R;
 import com.example.android.instagramclone.Utils.BottomNavigationViewHelper;
+import com.example.android.instagramclone.Utils.GridImageAdapter;
+import com.example.android.instagramclone.Utils.UniversalImageLoader;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.ArrayList;
 
 /**
  * Created by shash on 8/6/2017.
@@ -27,16 +32,58 @@ public class ProfileActivity extends AppCompatActivity {
     private Context mContext= ProfileActivity.this;
     private static final int ACTIVITY_NUM= 4;
     private ProgressBar mProgressBar;
+    private ImageView profilePhoto;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: started");
         setContentView(R.layout.activity_profile);
-        mProgressBar= (ProgressBar) findViewById(R.id.profileProgressBar);
-        mProgressBar.setVisibility(View.GONE);
+
         setupBottomNavigationView();
         setupToolBar();
+        setupActivityWidgets();
+        setProfilePhoto();
+        tempGridSetup();
+    }
+
+    private void tempGridSetup(){
+        ArrayList<String> imgURLs= new ArrayList<String>();
+        imgURLs.add("https://pbs.twimg.com/profile_images/616076655547682816/6gMRtQyY.jpg");
+        imgURLs.add("https://i.redd.it/9bf67ygj710z.jpg");
+        imgURLs.add("https://c1.staticflickr.com/5/4276/34102458063_7be616b993_o.jpg");
+        imgURLs.add("http://i.imgur.com/EwZRpvQ.jpg");
+        imgURLs.add("http://i.imgur.com/JTb2pXP.jpg");
+        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg");
+        imgURLs.add("https://i.redd.it/pwduhknig00z.jpg");
+        imgURLs.add("https://i.redd.it/clusqsm4oxzy.jpg");
+        imgURLs.add("https://i.redd.it/svqvn7xs420z.jpg");
+        imgURLs.add("http://i.imgur.com/j4AfH6P.jpg");
+        imgURLs.add("https://i.redd.it/89cjkojkl10z.jpg");
+        imgURLs.add("https://i.redd.it/aw7pv8jq4zzy.jpg");
+
+        setupImageGrid(imgURLs);
+    }
+
+    private void setupImageGrid(ArrayList<String> imgUrls){
+        GridView gridView= (GridView) findViewById(R.id.gridView);
+
+        GridImageAdapter gridImageAdapter= new GridImageAdapter(mContext,R.layout.layout_grid_imageview," ", imgUrls);
+        gridView.setAdapter(gridImageAdapter);
+    }
+
+    private void setProfilePhoto(){
+        Log.d(TAG, "setProfilePhoto: setting profile photo");
+        String imgURL= "www.androidcentral.com/sites/androidcentral.com/files/styles/xlarge/public/article_images/2016/08/ac-lloyd.jpg?itok=bb72IeLf";
+        UniversalImageLoader.setImage(imgURL,profilePhoto, mProgressBar ,"https://");
+    }
+
+    private void setupActivityWidgets(){
+        mProgressBar= (ProgressBar) findViewById(R.id.profileProgressBar);
+        mProgressBar.setVisibility(View.GONE);
+        profilePhoto= (ImageView) findViewById(R.id.profile_photo);
+
     }
 
     private void setupToolBar(){

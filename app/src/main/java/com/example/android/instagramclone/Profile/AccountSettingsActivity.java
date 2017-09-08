@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,7 +17,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.android.instagramclone.R;
+import com.example.android.instagramclone.Utils.BottomNavigationViewHelper;
 import com.example.android.instagramclone.Utils.SectionStatePagerAdapter;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
@@ -30,7 +34,7 @@ public class AccountSettingsActivity extends AppCompatActivity{
     private SectionStatePagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private RelativeLayout mRelativeLayout;
-
+    private static final int ACTIVITY_NUM= 4;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class AccountSettingsActivity extends AppCompatActivity{
         mRelativeLayout= (RelativeLayout) findViewById(R.id.relLayout1);
 
         setupSettingsList();
+        setupBottomNavigationView();
         setUpFragment();
 
         ImageView backArrow= (ImageView) findViewById(R.id.backArrow);
@@ -61,7 +66,7 @@ public class AccountSettingsActivity extends AppCompatActivity{
     }
 
     private void setViewPager(int fragmentNumber){
-        mRelativeLayout.setVisibility(View.GONE);
+        mRelativeLayout.setVisibility(View.INVISIBLE);
         Log.d(TAG, "setViewPager: Navigating to fragment number " + fragmentNumber);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(fragmentNumber);
@@ -85,5 +90,15 @@ public class AccountSettingsActivity extends AppCompatActivity{
                 setViewPager(position);
             }
         });
+    }
+
+    //Bottom Navigation setup
+    private void setupBottomNavigationView(){
+        BottomNavigationViewEx bottomNavigationViewEx= (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,bottomNavigationViewEx);
+        Menu menu= bottomNavigationViewEx.getMenu();
+        MenuItem menuItem= menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
     }
 }
