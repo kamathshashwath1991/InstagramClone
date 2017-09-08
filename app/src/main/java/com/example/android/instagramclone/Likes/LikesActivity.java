@@ -27,8 +27,8 @@ public class LikesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: started");
         
-        setContentView(R.layout.activity_main);
-        setupBottomNavigationView();
+        setContentView(R.layout.activity_login);
+       // setupBottomNavigationView();
     }
 
     //Bottom Navigation setup
