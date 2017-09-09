@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.instagramclone.Home.HomeActivity;
 import com.example.android.instagramclone.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -99,8 +100,27 @@ public class LogiinActivity extends AppCompatActivity {
                 }
             }
         });
+
+        TextView linkSignUp= (TextView) findViewById(R.id.link_signup);
+        linkSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating to register activity");
+                Intent intent= new Intent(LogiinActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        if (mAuth.getCurrentUser()!=null){
+            Intent intent= new Intent(LogiinActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
+    /**
+     * Set up of Firebase
+     */
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth");
         mAuth = FirebaseAuth.getInstance();
