@@ -10,9 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.instagramclone.R;
+import com.example.android.instagramclone.Utils.FirebaseMethods;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -31,14 +32,45 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private ProgressBar mProgressBar;
     private Context mContext;
+    private FirebaseMethods firebaseMethods;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         Log.d(TAG, "onCreate: started Register activity");
+        mContext= RegisterActivity.this;
+        firebaseMethods= new FirebaseMethods(mContext);
 
         initWidgets();
+        setupFirebaseAuth();
+        init();
+    }
+
+    private void init(){
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email= mEmail.getText().toString();
+                password= mPassword.getText().toString();
+                username= mUsername.getText().toString();
+
+                if (checkInputs(email,password,username)){
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    firebaseMethods.registerEmail(email,password,username);
+                }
+            }
+        });
+
+    }
+
+    private boolean checkInputs(String email, String password, String username) {
+        Log.d(TAG, "checkInputs: checking inputs from null values");
+        if (email.equals("") || password.equals("") || username.equals("")){
+            Toast.makeText(mContext, "All input fields must be filled", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -51,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.input_email);
         mPassword = (EditText) findViewById(R.id.input_password);
         mUsername= (EditText) findViewById(R.id.input_username);
-        mContext = RegisterActivity.this;
+        btnRegister= (Button) findViewById(R.id.btn_register);
     }
 
     private boolean isStringNull(String string){
@@ -81,7 +113,6 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
 
