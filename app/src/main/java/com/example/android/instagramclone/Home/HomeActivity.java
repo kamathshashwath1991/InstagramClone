@@ -75,12 +75,15 @@ public class HomeActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 
-    private void checkCurrentUser(FirebaseUser user){
-        Log.d(TAG, "checkCurrentUser: checking if current user has logged in");
-        Intent intent= new Intent(mContext, LogiinActivity.class);
-        startActivity(intent);
-    }
 
+    /**FireBaseCode**/
+    private void checkCurrentUser(FirebaseUser user) {
+        Log.d(TAG, "checkCurrentUser: checking if current user has logged in");
+        if (user == null) {
+            Intent intent = new Intent(mContext, LogiinActivity.class);
+            startActivity(intent);
+        }
+    }
 
     private void setupFirebaseAuth(){
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth");
@@ -89,7 +92,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
                 checkCurrentUser(user);
                 if (user != null) {
                     // User is signed in
@@ -101,12 +103,13 @@ public class HomeActivity extends AppCompatActivity {
                 // ...
             }
         };
-
     }
+
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        checkCurrentUser(mAuth.getCurrentUser());
     }
 
     @Override
