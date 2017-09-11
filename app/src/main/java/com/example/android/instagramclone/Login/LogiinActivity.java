@@ -86,14 +86,31 @@ public class LogiinActivity extends AppCompatActivity {
                            .addOnCompleteListener((Activity) mContext, new OnCompleteListener<AuthResult>() {
                                @Override
                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                   Log.d(TAG, "Sign in with  email: onComplete: " + task.isSuccessful());
+                                   FirebaseUser user= mAuth.getCurrentUser();
+
                                    if (!task.isSuccessful()){
                                        Toast.makeText(mContext,getString(R.string.auth_failed),
                                                Toast.LENGTH_SHORT).show();
+                                       mProgressBar.setVisibility(View.GONE);
                                    }
                                    else {
                                        Log.d(TAG, "Successfully Logged in");
-                                       Toast.makeText(mContext,getString(R.string.auth_success),
-                                               Toast.LENGTH_SHORT).show();
+                                       try{
+                                           if (user.isEmailVerified()){
+                                               Log.d(TAG, "onComplete: success, email is verified");
+                                               Intent intent= new Intent(LogiinActivity.this, HomeActivity.class);
+                                               startActivity(intent);
+                                           }
+                                           else {
+                                               Toast.makeText(mContext,"Email is not verified, check your inboox", Toast.LENGTH_SHORT).show();
+                                               mProgressBar.setVisibility(View.GONE);
+                                               mAuth.signOut();
+                                           }
+
+                                       }catch (NullPointerException e){
+                                           Log.e(TAG, "onComplete: Null Pointer exception"+ e.getMessage() );
+                                       }
                                    }
                                }
                            });
