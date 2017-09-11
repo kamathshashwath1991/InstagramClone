@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (checkInputs(email,password,username)){
                     mProgressBar.setVisibility(View.VISIBLE);
-                    firebaseMethods.registerEmail(email,password,username);
+                    firebaseMethods.registerNewEmail(email,password,username);
                 }
             }
         });
@@ -132,9 +132,8 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                             username = username + append;
 
-                            //add new user to the data base
-
-                            //add new user account settings in the database
+                            firebaseMethods.addNewUser(email,username," "," "," ");
+                            Toast.makeText(mContext,"SignUp successfull. Sending email verification", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
