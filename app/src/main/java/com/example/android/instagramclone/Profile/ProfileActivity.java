@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,15 +43,24 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: started");
         setContentView(R.layout.activity_profile);
-
-        setupBottomNavigationView();
-        setupToolBar();
-        setupActivityWidgets();
-        setProfilePhoto();
-        tempGridSetup();
+        init();
+//        setupBottomNavigationView();
+//        setupToolBar();
+//        setupActivityWidgets();
+//        setProfilePhoto();
+//        tempGridSetup();
     }
 
-    private void tempGridSetup(){
+    private void init(){
+        Log.d(TAG, "init: inflating" + getString(R.string.profile_fragment));
+        ProfileFragment fragment= new ProfileFragment();
+        FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,fragment);
+        transaction.addToBackStack(getString(R.string.profile_fragment));
+        transaction.commit();
+    }
+
+   /* private void tempGridSetup(){
         ArrayList<String> imgURLs= new ArrayList<String>();
         imgURLs.add("https://pbs.twimg.com/profile_images/616076655547682816/6gMRtQyY.jpg");
         imgURLs.add("https://i.redd.it/9bf67ygj710z.jpg");
@@ -115,4 +126,6 @@ public class ProfileActivity extends AppCompatActivity {
         MenuItem menuItem= menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
+
+    */
 }
